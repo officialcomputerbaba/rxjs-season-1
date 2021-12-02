@@ -1,8 +1,13 @@
-import { iif, of, fromEvent } from "rxjs";
+import { iif, of } from "rxjs";
+import { ajax } from "rxjs/ajax";
 
 let isAuthenticated = true;
 
-const obs$ = iif(() => isAuthenticated, of(["Ajit", "Ronaldo"]), of([]));
+const obs$ = iif(
+  () => isAuthenticated,
+  ajax.getJSON("https://jsonplaceholder.typicode.com/posts"),
+  of("Not authenticated")
+);
 
 obs$.subscribe((value) => {
   console.log("1st observer", value);
@@ -10,20 +15,6 @@ obs$.subscribe((value) => {
 
 isAuthenticated = false;
 
-const btn = document.getElementById("btn") as HTMLButtonElement;
-
-// traditional event handling pattern
-btn?.addEventListener("click", () => {
-  obs$.subscribe((value) => {
-    console.log("2nd Observer", value);
-  });
+obs$.subscribe((value) => {
+  console.log("2nd Observer", value);
 });
-
-// NOTE: we can also use below code to use observer pattern style event handling
-// uncomment the below code and comment the traditional code written above to see the behavior
-
-// fromEvent(btn, "click").subscribe(() => {
-//   obs$.subscribe((value) => {
-//     console.log("2nd Observer", value);
-//   });
-// });
