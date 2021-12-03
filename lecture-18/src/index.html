@@ -6,17 +6,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rxjs</title>
+
+    <style>
+        .animationBall {
+            width: 20px;
+            height: 20px;
+            background: red;
+            border-radius: 100%;
+            position: absolute;
+            transition: all ease-in-out 0.3s;
+        }
+
+        .stroke {
+            border: 2px solid black;
+        }
+    </style>
+
 </head>
 
 <body>
-    Fetch
-    <select id="fetchType">
-        <option selected value="posts">Posts</option>
-        <option value="comments">Comments</option>
-        <option value="users">Users</option>
-    </select>
-
-    <button id="fetchBtn">Fetch Results</button>
+    <div id="ball" class="animationBall stroke"></div>
 </body>
 
 </html>
