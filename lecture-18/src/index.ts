@@ -1,33 +1,57 @@
-import { defer, of } from "rxjs";
+import { defer, fromEvent, of, iif } from "rxjs";
+import { ajax } from "rxjs/ajax";
 
-// @example 1: Problem with `of` observable
+// @example 1
 
-// const obs$ = of(new Date());
+let id = 3;
 
-// obs$.subscribe((value) => {
-//   console.log("1st observer ", value.toTimeString());
-// });
+const obs$ = defer(() => {
+  if (id > 0 && id <= 3) {
+    return ajax.getJSON(`https://jsonplaceholder.typicode.com/users/${id}`);
+  }
 
-// setTimeout(() => {
-//   obs$.subscribe((value) => {
-//     console.log("2nd observer ", value.toTimeString());
-//   });
-// }, 4000);
+  return of([]);
+});
+
+fromEvent(document.getElementById("actionBtn") as HTMLButtonElement, "click").subscribe(() => {
+  obs$.subscribe((data) => {
+    id -= 1;
+    console.log(data);
+  });
+});
 
 /********************************/
 
-// @example 2: Solution using `defer`
+// @example 2: diff b/w `defer` and `iif`
 
-const obs$ = defer(() => {
-  return of(new Date());
-});
+// let id = 3;
 
-obs$.subscribe((value) => {
-  console.log("1st observer ", value.toTimeString());
-});
+// const obs$ = iif(() => id > 0 && id <= 3, ajax.getJSON(`https://jsonplaceholder.typicode.com/users/${id}`), of([]));
 
-setTimeout(() => {
-  obs$.subscribe((value) => {
-    console.log("2nd observer ", value.toTimeString());
-  });
-}, 4000);
+// fromEvent(document.getElementById("actionBtn") as HTMLButtonElement, "click").subscribe(() => {
+//   obs$.subscribe((data) => {
+//     id -= 1;
+//     console.log(data);
+//   });
+// });
+
+/********************************/
+
+// @example 3: Returning Promise in`defer`
+
+// let id = 3;
+
+// const obs$ = defer(() => {
+//   if (id > 0 && id <= 3) {
+//     return fetch(`https://jsonplaceholder.typicode.com/users/${id}`);
+//   }
+
+//   return of([]);
+// });
+
+// fromEvent(document.getElementById("actionBtn") as HTMLButtonElement, "click").subscribe(() => {
+//   obs$.subscribe((data) => {
+//     id -= 1;
+//     console.log(data);
+//   });
+// });
