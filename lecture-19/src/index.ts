@@ -1,18 +1,12 @@
-import { of, from, concat } from "rxjs";
-import { ajax } from "rxjs/ajax";
+import { interval, range, concat } from "rxjs";
 
-const num$ = of(23, 12, 3);
+// infinite observable, will put `concat` on forever wait to subscribe other observable
+const interval$ = interval(1000);
 
-// correct url -> https://jsonplaceholder.typicode.com/todos
-const todos$ = ajax.getJSON("https://jsonplaceholder.typicode.com/todoss"); // this will create an error
+const range$ = range(1, 5); // never subscribed by `concat`
 
-const names$ = from(["Ajit", "Amitabh"]); // this observable will never be subscribed by `concat`
-
-concat(num$, todos$, names$).subscribe({
+concat(interval$, range$).subscribe({
   next: console.log,
-  error: (err) => {
-    console.log("Error", err);
-  },
   complete: () => {
     console.log("Completed");
   },
