@@ -1,14 +1,21 @@
-import { merge, interval } from "rxjs";
-import { errorObservable } from "./custom-operators";
+import { merge } from "rxjs";
+import { ajax } from "rxjs/ajax";
 
-const interval$ = interval(1000);
-const error$ = errorObservable();
+const user$ = ajax.getJSON("https://jsonplaceholder.typicode.com/users/1");
 
-merge(interval$, error$).subscribe({
+const post$ = ajax.getJSON("https://jsonplaceholder.typicode.com/posts/1");
+
+const todo$ = ajax.getJSON("https://jsonplaceholder.typicode.com/todos/1");
+
+// defaults to no. of observables
+// try different values and check the network tab
+const concurrent = 2;
+
+merge(user$, post$, todo$, concurrent).subscribe({
   next: console.log,
 
-  // whenever error occurs
-  error: (err) => {
-    console.log("Error", err);
+  // when all ajax requests completed
+  complete: () => {
+    console.log("Completed");
   },
 });
