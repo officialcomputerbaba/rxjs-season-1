@@ -1,15 +1,14 @@
-import { merge } from "rxjs";
-import { ajax } from "rxjs/ajax";
+import { merge, interval } from "rxjs";
+import { errorObservable } from "./custom-operators";
 
-const user$ = ajax.getJSON("https://jsonplaceholder.typicode.com/users/1");
+const interval$ = interval(1000);
+const error$ = errorObservable();
 
-const post$ = ajax.getJSON("https://jsonplaceholder.typicode.com/posts/1");
-
-merge(user$, post$).subscribe({
+merge(interval$, error$).subscribe({
   next: console.log,
 
-  // when both input observables completed
-  complete: () => {
-    console.log("Completed");
+  // whenever error occurs
+  error: (err) => {
+    console.log("Error", err);
   },
 });
