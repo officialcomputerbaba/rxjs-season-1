@@ -1,11 +1,15 @@
-import { merge, fromEvent } from "rxjs";
+import { merge } from "rxjs";
+import { ajax } from "rxjs/ajax";
 
-const nameInputBox = document.getElementById("name") as HTMLInputElement;
-const btn = document.getElementById("btn") as HTMLButtonElement;
+const user$ = ajax.getJSON("https://jsonplaceholder.typicode.com/users/1");
 
-const blur$ = fromEvent(nameInputBox, "blur");
-const click$ = fromEvent(btn, "click");
+const post$ = ajax.getJSON("https://jsonplaceholder.typicode.com/posts/1");
 
-merge(blur$, click$).subscribe(() => {
-  console.log(nameInputBox.value);
+merge(user$, post$).subscribe({
+  next: console.log,
+
+  // when both input observables completed
+  complete: () => {
+    console.log("Completed");
+  },
 });
