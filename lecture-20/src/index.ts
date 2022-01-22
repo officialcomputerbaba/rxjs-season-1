@@ -1,21 +1,12 @@
 import { merge } from "rxjs";
-import { ajax } from "rxjs/ajax";
+import { namedInterval } from "./custom-operators";
 
-const user$ = ajax.getJSON("https://jsonplaceholder.typicode.com/users/1");
-
-const post$ = ajax.getJSON("https://jsonplaceholder.typicode.com/posts/1");
-
-const todo$ = ajax.getJSON("https://jsonplaceholder.typicode.com/todos/1");
+const timer1$ = namedInterval(1000, "timer1", 7);
+const timer2$ = namedInterval(2000, "timer2", 6);
+const timer3$ = namedInterval(500, "timer3", 10);
 
 // defaults to no. of observables
-// try different values and check the network tab
+// try different values
 const concurrent = 2;
 
-merge(user$, post$, todo$, concurrent).subscribe({
-  next: console.log,
-
-  // when all ajax requests completed
-  complete: () => {
-    console.log("Completed");
-  },
-});
+merge(timer1$, timer2$, timer3$, concurrent).subscribe(console.log);
