@@ -1,14 +1,17 @@
 import { combineLatest, of } from "rxjs";
-import { completeWithNoEmission } from "./custom-operators";
 
-const empty$ = completeWithNoEmission();
-const names$ = of("Ajit", "Amitabh");
+const year$ = of(2022);
+const series$ = of({ disneyPlus: "Moon Night", netflix: "Stranger Things 4" });
 
-combineLatest([empty$, names$]).subscribe({
-  // no result will be printed
+combineLatest([year$, series$]).subscribe({
   next: console.log,
 
-  // `combineLatest` completes immediately, because `empty$` completes without emitting any one
+  // in case of error (if any observable has an error)
+  error: (err) => {
+    console.log("Error", err);
+  },
+
+  // after both observables complete
   complete: () => {
     console.log("Completed");
   },
