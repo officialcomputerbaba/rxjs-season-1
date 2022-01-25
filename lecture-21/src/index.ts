@@ -1,10 +1,15 @@
-import { combineLatest, range } from "rxjs";
-import { noEmissionObservable } from "./custom-operators";
+import { combineLatest, of } from "rxjs";
+import { completeWithNoEmission } from "./custom-operators";
 
-const noEmit$ = noEmissionObservable();
-const range$ = range(1, 5);
+const empty$ = completeWithNoEmission();
+const names$ = of("Ajit", "Amitabh");
 
-// no result will be printed, `combineLatest` is in forever wait
-combineLatest([noEmit$, range$]).subscribe((resutlPair) => {
-  console.log(resutlPair);
+combineLatest([empty$, names$]).subscribe({
+  // no result will be printed
+  next: console.log,
+
+  // `combineLatest` completes immediately, because `empty$` completes without emitting any one
+  complete: () => {
+    console.log("Completed");
+  },
 });
