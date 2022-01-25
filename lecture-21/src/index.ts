@@ -1,9 +1,14 @@
-import { combineLatest, of } from "rxjs";
+import { combineLatest } from "rxjs";
+import { fromEvent } from "./custom-operators";
 
-const num1$ = of(12, 8, 6);
-const num2$ = of(4, 2);
-const num3$ = of(12, 20, 14);
+const width$ = fromEvent(document.getElementById("widthBox"), "blur");
 
-combineLatest([num1$, num2$, num3$]).subscribe((resultPair) => {
-  console.log(resultPair);
+const length$ = fromEvent(document.getElementById("lengthBox"), "blur");
+
+combineLatest([width$, length$]).subscribe((resultPair) => {
+  const [width, length] = resultPair;
+
+  const area = +width * +length;
+
+  console.log(`Area: ${width} x ${length} = ${area}`);
 });
