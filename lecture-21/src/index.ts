@@ -1,9 +1,8 @@
-import { combineLatest } from "rxjs";
-import { namedTimer } from "./custom-operators";
+import { combineLatest, interval, fromEvent } from "rxjs";
 
-const timer1$ = namedTimer(0, "timer1");
-const timer2$ = namedTimer(500, "timer2");
+const timer$ = interval(1000);
+const click$ = fromEvent(document, "click");
 
-combineLatest([timer1$, timer2$]).subscribe((resultPair) => {
+combineLatest([timer$, click$]).subscribe((resultPair) => {
   console.log(resultPair);
 });
