@@ -1,12 +1,15 @@
 import { combineLatest } from "rxjs";
 import { fromEvent } from "./custom-operators";
 
-const width$ = fromEvent(document.getElementById("widthBox"), "blur");
+const rect$ = {
+  width$: fromEvent(document.getElementById("widthBox"), "blur"),
+  length$: fromEvent(document.getElementById("lengthBox"), "blur"),
+};
 
-const length$ = fromEvent(document.getElementById("lengthBox"), "blur");
+combineLatest(rect$).subscribe((resultDict) => {
+  console.log(resultDict);
 
-combineLatest([width$, length$]).subscribe((resultPair) => {
-  const [width, length] = resultPair;
+  const { width, length } = resultDict;
 
   const area = +width * +length;
 
