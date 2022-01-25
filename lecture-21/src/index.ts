@@ -1,17 +1,10 @@
-import { combineLatest } from "rxjs";
-import { fromEvent } from "./custom-operators";
+import { combineLatest, range } from "rxjs";
+import { noEmissionObservable } from "./custom-operators";
 
-const rect$ = {
-  width$: fromEvent(document.getElementById("widthBox"), "blur"),
-  length$: fromEvent(document.getElementById("lengthBox"), "blur"),
-};
+const noEmit$ = noEmissionObservable();
+const range$ = range(1, 5);
 
-combineLatest(rect$).subscribe((resultDict) => {
-  console.log(resultDict);
-
-  const { width, length } = resultDict;
-
-  const area = +width * +length;
-
-  console.log(`Area: ${width} x ${length} = ${area}`);
+// no result will be printed, `combineLatest` is in forever wait
+combineLatest([noEmit$, range$]).subscribe((resutlPair) => {
+  console.log(resutlPair);
 });
