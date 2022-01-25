@@ -1,8 +1,9 @@
-import { combineLatest, interval, fromEvent } from "rxjs";
+import { combineLatest, of } from "rxjs";
 
-const timer$ = interval(1000);
-const click$ = fromEvent(document, "click");
+const num1$ = of(12, 8, 6);
+const num2$ = of(4, 2);
+const num3$ = of(12, 20, 14);
 
-combineLatest([timer$, click$]).subscribe((resultPair) => {
+combineLatest([num1$, num2$, num3$]).subscribe((resultPair) => {
   console.log(resultPair);
 });
