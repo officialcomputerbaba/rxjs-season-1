@@ -1,11 +1,9 @@
-import { forkJoin, of } from "rxjs";
-import { ajax } from "rxjs/ajax";
+import { forkJoin, range } from "rxjs";
+import { noEmissionObservable } from "./custom-operators";
 
-const profile$ = {
-  user: ajax.getJSON("https://jsonplaceholder.typicode.com/users/1"),
-  books: of({ c: "Let us c", javascript: "Professional JavaScript 4" }),
-};
+const noEmit$ = noEmissionObservable();
+const range$ = range(1, 5);
 
-forkJoin(profile$).subscribe((resultDict) => {
-  console.log(resultDict);
-});
+// there will be no output, forkJoin is in forever wait because of `noEmit$`
+
+forkJoin([noEmit$, range$]).subscribe(console.log);
