@@ -1,14 +1,14 @@
-import { forkJoin, of } from "rxjs";
-import { completeWithNoEmission } from "./custom-operators";
+import { forkJoin, interval, range, from } from "rxjs";
 
-const empty$ = completeWithNoEmission();
-const names$ = of("Ajit", "Amitabh");
+const timer$ = interval(1000);
+const ages$ = range(11, 20);
+const roles$ = from(["Teacher", "Student"]);
 
-forkJoin([empty$, names$]).subscribe({
-  // there will be no call to `next` callback
+// there will be no call to `next` and `complete` callback
+// forkJoin is in forever wait because of `interval` observable
+
+forkJoin([timer$, ages$, roles$]).subscribe({
   next: console.log,
-
-  // only complete callback is called
   complete: () => {
     console.log("Completed");
   },
