@@ -1,12 +1,11 @@
-import { forkJoin, from, of, timer } from "rxjs";
+import { forkJoin, of } from "rxjs";
+import { ajax } from "rxjs/ajax";
 
-//  when all emites atleast one value and completes then emit the last values of each input observable
+const profile$ = {
+  user: ajax.getJSON("https://jsonplaceholder.typicode.com/users/1"),
+  books: of({ c: "Let us c", javascript: "Professional JavaScript 4" }),
+};
 
-const rates$ = of(11, 20, 3, 14);
-const timer$ = timer(4000);
-const names$ = from(["Ajit", "Akshay", "Anusha"]);
-const isAllowed = Promise.resolve(true);
-
-forkJoin([rates$, timer$, names$, isAllowed]).subscribe((resultList) => {
-  console.log(resultList);
+forkJoin(profile$).subscribe((resultDict) => {
+  console.log(resultDict);
 });
