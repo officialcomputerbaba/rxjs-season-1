@@ -1,12 +1,20 @@
 import { forkJoin, of, from } from "rxjs";
+import { errorObservable } from "./custom-operators";
 
-const years$ = of(2016, 2020);
-const heroes$ = from(["Spiderman", "Batman"]);
+const marks$ = of(100, 90, 70);
+const errorObs$ = errorObservable();
+const users$ = from(["Sagar", "Nitish"]);
 
-forkJoin([years$, heroes$]).subscribe({
+forkJoin([marks$, errorObs$, users$]).subscribe({
+  // not going to be called
   next: console.log,
 
-  // this will be called after all observables complete
+  // this callback will be called
+  error: (err) => {
+    console.log("Error:", err);
+  },
+
+  // not going to be called
   complete: () => {
     console.log("Completed");
   },
