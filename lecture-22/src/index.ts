@@ -1,9 +1,15 @@
-import { forkJoin, range } from "rxjs";
-import { noEmissionObservable } from "./custom-operators";
+import { forkJoin, of } from "rxjs";
+import { completeWithNoEmission } from "./custom-operators";
 
-const noEmit$ = noEmissionObservable();
-const range$ = range(1, 5);
+const empty$ = completeWithNoEmission();
+const names$ = of("Ajit", "Amitabh");
 
-// there will be no output, forkJoin is in forever wait because of `noEmit$`
+forkJoin([empty$, names$]).subscribe({
+  // there will be no call to `next` callback
+  next: console.log,
 
-forkJoin([noEmit$, range$]).subscribe(console.log);
+  // only complete callback is called
+  complete: () => {
+    console.log("Completed");
+  },
+});
