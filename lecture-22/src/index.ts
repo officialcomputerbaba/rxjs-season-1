@@ -1,14 +1,12 @@
-import { forkJoin, interval, range, from } from "rxjs";
+import { forkJoin, of, from } from "rxjs";
 
-const timer$ = interval(1000);
-const ages$ = range(11, 20);
-const roles$ = from(["Teacher", "Student"]);
+const years$ = of(2016, 2020);
+const heroes$ = from(["Spiderman", "Batman"]);
 
-// there will be no call to `next` and `complete` callback
-// forkJoin is in forever wait because of `interval` observable
-
-forkJoin([timer$, ages$, roles$]).subscribe({
+forkJoin([years$, heroes$]).subscribe({
   next: console.log,
+
+  // this will be called after all observables complete
   complete: () => {
     console.log("Completed");
   },
