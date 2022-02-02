@@ -1,11 +1,11 @@
-import { zip, of, interval } from "rxjs";
+import { zip, fromEvent } from "rxjs";
 
-const names$ = of("Ajit", "Amitabh", "Ashish", "Akshay");
-const roles$ = of("Mentor", "Programmer", "Designer", "Developer");
-const ranks$ = of(11, 23, 5);
-const timer$ = interval(2000);
+const mouseDown$ = fromEvent<MouseEvent>(document, "mousedown");
+const mouseUp$ = fromEvent<MouseEvent>(document, "mouseup");
 
-// max resultant pairs possible 3
-// smallest size observable `ranks$` determines the maximum number of pairs
+zip(mouseDown$, mouseUp$).subscribe((eventsPair) => {
+  const [mouseDownEvent, mouseUpEvent] = eventsPair;
 
-zip(names$, roles$, ranks$, timer$).subscribe(console.log);
+  console.log(`x: ${mouseDownEvent.x}, y: ${mouseDownEvent.y}`);
+  console.log(`x: ${mouseUpEvent.x}, y: ${mouseUpEvent.y}`);
+});
