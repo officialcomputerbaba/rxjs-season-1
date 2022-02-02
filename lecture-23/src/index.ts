@@ -3,9 +3,16 @@ import { zip, fromEvent } from "rxjs";
 const mouseDown$ = fromEvent<MouseEvent>(document, "mousedown");
 const mouseUp$ = fromEvent<MouseEvent>(document, "mouseup");
 
-zip(mouseDown$, mouseUp$).subscribe((eventsPair) => {
-  const [mouseDownEvent, mouseUpEvent] = eventsPair;
+const mouseEvents$ = zip(mouseDown$, mouseUp$, (mouseDownEvent, mouseUpEvent) => {
+  return {
+    down: mouseDownEvent,
+    up: mouseUpEvent,
+  };
+});
 
-  console.log(`x: ${mouseDownEvent.x}, y: ${mouseDownEvent.y}`);
-  console.log(`x: ${mouseUpEvent.x}, y: ${mouseUpEvent.y}`);
+mouseEvents$.subscribe((events) => {
+  const { down, up } = events;
+
+  console.log(`x: ${down.x}, y: ${down.y}`);
+  console.log(`x: ${up.x}, y: ${up.y}`);
 });
