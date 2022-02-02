@@ -1,20 +1,8 @@
-import { zip, of, from } from "rxjs";
-import { delayedFrom } from "./custom-operators";
+import { zip, from } from "rxjs";
 
-// @example 1: alternate time observables
+const lang$ = from(["JS", "JAVA", "C"]);
+const frameworks$ = from(["Angular", "Spring"]);
 
-const names$ = from(["Ajit", "Ronaldo"]);
-const distance$ = delayedFrom([12, 10]);
-
-zip(names$, distance$).subscribe((resultList) => {
+zip(lang$, frameworks$).subscribe((resultList) => {
   console.log(resultList);
 });
-
-// @example 2: immediately completing observables
-
-// const names$ = of("Ajit", "Amitabh", "Ashish", "Akshay");
-// const roles$ = of("Mentor", "Programmer", "Designer", "Developer");
-
-// zip(names$, roles$).subscribe((resultList) => {
-//   console.log(resultList);
-// });
