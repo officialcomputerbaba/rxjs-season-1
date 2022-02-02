@@ -1,22 +1,10 @@
-import { zip, concat, combineLatest, from } from "rxjs";
+import { zip, of, interval } from "rxjs";
 
-const lang$ = from(["JS", "JAVA", "C"]);
-const frameworks$ = from(["Angular", "Spring"]);
+const marks$ = of(12, 34);
+const timer$ = interval(1000);
 
-console.log("--concat--");
+// max resultant pairs possible 2
+// result [12, 0] [34, 1]
+// smallest size observable `of` determines the maximum number of pairs
 
-concat(lang$, frameworks$).subscribe((value) => {
-  console.log(value);
-});
-
-console.log("--combineLatest--");
-
-combineLatest([lang$, frameworks$]).subscribe((resultList) => {
-  console.log(resultList);
-});
-
-console.log("--zip--");
-
-zip(lang$, frameworks$).subscribe((resultPair) => {
-  console.log(resultPair);
-});
+zip(marks$, timer$).subscribe(console.log);
