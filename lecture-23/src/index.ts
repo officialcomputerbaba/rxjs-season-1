@@ -1,18 +1,12 @@
-import { zip, fromEvent } from "rxjs";
+import { zip, from } from "rxjs";
 
-const mouseDown$ = fromEvent<MouseEvent>(document, "mousedown");
-const mouseUp$ = fromEvent<MouseEvent>(document, "mouseup");
+const notebooks$ = from(["Dell", "Mac", "Hp"]);
+const ratings$ = from([5, 4, 1]);
 
-const mouseEvents$ = zip(mouseDown$, mouseUp$, (mouseDownEvent, mouseUpEvent) => {
-  return {
-    down: mouseDownEvent,
-    up: mouseUpEvent,
-  };
-});
+zip(notebooks$, ratings$).subscribe({
+  next: console.log,
 
-mouseEvents$.subscribe((events) => {
-  const { down, up } = events;
-
-  console.log(`x: ${down.x}, y: ${down.y}`);
-  console.log(`x: ${up.x}, y: ${up.y}`);
+  complete: () => {
+    console.log("Completed");
+  },
 });
