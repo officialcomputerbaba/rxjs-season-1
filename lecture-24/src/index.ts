@@ -1,14 +1,12 @@
 import { race } from "rxjs";
-import { namedInterval } from "./custom-operators";
+import { delayedFrom, errorObservable } from "./custom-operators";
 
-const interval1$ = namedInterval(500, "timer1", 3);
-const interval2$ = namedInterval(4000, "timer2", 7);
+const points$ = delayedFrom([34, 12, 7, 1], 500);
+const error$ = errorObservable();
 
-race(interval1$, interval2$).subscribe({
+race(points$, error$).subscribe({
   next: console.log,
-
-  // when interval1$ completes this callback is called
-  complete: () => {
-    console.log("Completed");
+  error: (err) => {
+    console.log("Error", err);
   },
 });
