@@ -1,10 +1,12 @@
 import { race } from "rxjs";
-import { delayedFrom, errorObservable } from "./custom-operators";
+import { namedInterval, intervalError } from "./custom-operators";
 
-const points$ = delayedFrom([34, 12, 7, 1], 500);
-const error$ = errorObservable();
+const timer1$ = namedInterval(1000, "timer1");
 
-race(points$, error$).subscribe({
+// this observable will throw error after some time
+const timer2$ = intervalError(500, "timer2");
+
+race(timer1$, timer2$).subscribe({
   next: console.log,
   error: (err) => {
     console.log("Error", err);
