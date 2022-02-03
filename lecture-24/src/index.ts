@@ -1,13 +1,14 @@
 import { race } from "rxjs";
-import { ajax } from "rxjs/ajax";
+import { namedInterval } from "./custom-operators";
 
-const net1$ = ajax.get("https://httpbin.org/delay/1?id=12");
-const net2$ = ajax.get("https://httpbin.org/delay/2?id=3");
-const net3$ = ajax.get("https://httpbin.org/delay/1?id=10");
+const interval1$ = namedInterval(500, "timer1", 3);
+const interval2$ = namedInterval(4000, "timer2", 7);
 
-// the requests which complete first
-// it can be `net1$` or `net2$` depends upon network and server
+race(interval1$, interval2$).subscribe({
+  next: console.log,
 
-race(net1$, net2$, net3$).subscribe((netResponse) => {
-  console.log(netResponse.response);
+  // when interval1$ completes this callback is called
+  complete: () => {
+    console.log("Completed");
+  },
 });
