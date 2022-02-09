@@ -1,10 +1,11 @@
-import { concat, merge, combineLatest, zip, forkJoin, fromEvent } from "rxjs";
+import { concat, merge, combineLatest, zip, forkJoin } from "rxjs";
+import { namedInterval, delayedFrom } from "./custom-operators";
 
-const mouseDown$ = fromEvent<MouseEvent>(document, "mousedown");
-const mouseUp$ = fromEvent<MouseEvent>(document, "mouseup");
+const pingInterval$ = namedInterval(1000, "ping");
+const browsers$ = delayedFrom(["Chrome", "Safari", "Mozilla"], 500);
 
-// concat(mouseDown$, mouseUp$).subscribe(console.log);
-// merge(mouseDown$, mouseUp$).subscribe(console.log);
-// combineLatest([mouseDown$, mouseUp$]).subscribe(console.log);
-// forkJoin([mouseDown$, mouseUp$]).subscribe(console.log);
-// zip([mouseDown$, mouseUp$]).subscribe(console.log);
+// concat(pingInterval$, browsers$).subscribe(console.log);
+// merge(pingInterval$, browsers$).subscribe(console.log);
+// combineLatest([pingInterval$, browsers$]).subscribe(console.log);
+// forkJoin([pingInterval$, browsers$]).subscribe(console.log);
+// zip([pingInterval$, browsers$]).subscribe(console.log);
