@@ -1,11 +1,10 @@
-import { concat, merge, combineLatest, zip, forkJoin } from "rxjs";
-import { delayedFrom } from "./custom-operators";
+import { concat, merge, combineLatest, zip, forkJoin, fromEvent } from "rxjs";
 
-const names$ = delayedFrom(["Ajit", "Sagar", "Anusha"], 500);
-const views$ = delayedFrom([10, 20, 30, 40], 700);
+const mouseDown$ = fromEvent<MouseEvent>(document, "mousedown");
+const mouseUp$ = fromEvent<MouseEvent>(document, "mouseup");
 
-// concat(names$, views$).subscribe(console.log);
-// merge(names$, views$).subscribe(console.log);
-// combineLatest([names$, views$]).subscribe(console.log);
-// forkJoin([names$, views$]).subscribe(console.log);
-// zip([names$, views$]).subscribe(console.log);
+// concat(mouseDown$, mouseUp$).subscribe(console.log);
+// merge(mouseDown$, mouseUp$).subscribe(console.log);
+// combineLatest([mouseDown$, mouseUp$]).subscribe(console.log);
+// forkJoin([mouseDown$, mouseUp$]).subscribe(console.log);
+// zip([mouseDown$, mouseUp$]).subscribe(console.log);
