@@ -1,7 +1,8 @@
-import { concat, merge, combineLatest, zip, forkJoin, from } from "rxjs";
+import { concat, merge, combineLatest, zip, forkJoin } from "rxjs";
+import { delayedFrom } from "./custom-operators";
 
-const names$ = from(["Ajit", "Sagar", "Anusha"]);
-const views$ = from([10, 20, 30, 40]);
+const names$ = delayedFrom(["Ajit", "Sagar", "Anusha"], 500);
+const views$ = delayedFrom([10, 20, 30, 40], 700);
 
 // concat(names$, views$).subscribe(console.log);
 // merge(names$, views$).subscribe(console.log);
