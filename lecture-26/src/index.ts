@@ -1,16 +1,22 @@
-import { EMPTY } from "rxjs";
+import { EMPTY, defer, fromEvent } from "rxjs";
+import { ajax } from "rxjs/ajax";
 
-EMPTY.subscribe({
-  // the next method will not be called
-  next: (v) => {
-    console.log("Next method ", v);
-  },
-  // the error method will not be called
-  error: (err) => {
-    console.log("Err method ", err);
-  },
-  // only the complete method will be called
-  complete: () => {
-    console.log("Completed");
-  },
+let isDownloaded = false;
+
+const download$ = defer(() => {
+  return isDownloaded ? EMPTY : ajax.get("https://httpbin.org/image/png");
+});
+
+const downBtn = document.getElementById("downBtn") as HTMLButtonElement;
+
+fromEvent(downBtn, "click").subscribe(() => {
+  download$.subscribe({
+    next: (v) => {
+      isDownloaded = true;
+      console.log("Image data", v);
+    },
+    complete: () => {
+      console.log("Download completed");
+    },
+  });
 });
