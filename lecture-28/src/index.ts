@@ -1,22 +1,20 @@
 import { from } from "rxjs";
 import { map } from "rxjs/operators";
 
+const names$ = from(["Ajit", "Ronaldo", "Dr. Strange"]);
+
 // example 1
 
-from([1, 2, 3, 4, 5])
-  .pipe(
-    map((n) => {
-      return n * 2;
-    })
-  )
-  .subscribe(console.log);
+const namesUpper$ = names$.pipe(map((name) => name.toUpperCase()));
+
+namesUpper$.subscribe(console.log);
 
 // example 2: with index
 
-// from([1, 2, 3, 4, 5])
-//   .pipe(
-//     map((n, idx) => {
-//       return n + idx;
-//     })
-//   )
-//   .subscribe(console.log);
+// const namesList$ = names$.pipe(
+//   map((name, idx) => {
+//     return `${idx + 1} ${name}`;
+//   })
+// );
+
+// namesList$.subscribe(console.log);
