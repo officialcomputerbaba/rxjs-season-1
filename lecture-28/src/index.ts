@@ -1,9 +1,12 @@
 import { fromEvent } from "rxjs";
 import { map } from "rxjs/operators";
 
-fromEvent<PointerEvent>(document, "click").pipe(
+fromEvent<KeyboardEvent>(document.getElementById("inputBox") as HTMLInputElement, "keyup")
+  .pipe(
     map((evt) => {
-      return { x: evt.x, y: evt.y };
+      const input = evt.target as HTMLInputElement;
+
+      return input.value;
     })
-  );
+  )
   .subscribe(console.log);
