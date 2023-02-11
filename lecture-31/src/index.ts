@@ -1,5 +1,4 @@
 import { from } from "rxjs";
-import { ajax } from "rxjs/ajax";
 import { mergeMap } from "rxjs/operators";
 
 const urls = [
@@ -9,10 +8,23 @@ const urls = [
   "https://jsonplaceholder.typicode.com/posts/4",
 ];
 
+// example 1
+
 from(urls)
   .pipe(
     mergeMap((url: string) => {
-      return ajax.getJSON(url);
-    }, 2) // with concurrent factor 2, `concatMap` always has 1
+      return fetch(url).then((res) => res.json());
+    })
   )
   .subscribe(console.log);
+
+// example 2: with async function
+
+// from(urls)
+//   .pipe(
+//     mergeMap(async (url: string) => {
+//       const res = await fetch(url);
+//       return await res.json();
+//     })
+//   )
+//   .subscribe(console.log);
