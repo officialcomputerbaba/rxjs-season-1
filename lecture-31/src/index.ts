@@ -1,5 +1,6 @@
 import { from } from "rxjs";
-import { mergeMap } from "rxjs/operators";
+import { ajax } from "rxjs/ajax";
+import { mergeMap, map } from "rxjs/operators";
 
 const urls = [
   "https://jsonplaceholder.typicode.com/posts/1",
@@ -8,23 +9,15 @@ const urls = [
   "https://jsonplaceholder.typicode.com/posts/4",
 ];
 
-// example 1
+interface Post {
+  id: number;
+  title: string;
+  body: string;
+}
 
 from(urls)
   .pipe(
-    mergeMap((url: string) => {
-      return fetch(url).then((res) => res.json());
-    })
+    mergeMap((url: string) => ajax.getJSON<Post>(url)),
+    map((post: Post) => post.title)
   )
   .subscribe(console.log);
-
-// example 2: with async function
-
-// from(urls)
-//   .pipe(
-//     mergeMap(async (url: string) => {
-//       const res = await fetch(url);
-//       return await res.json();
-//     })
-//   )
-//   .subscribe(console.log);
