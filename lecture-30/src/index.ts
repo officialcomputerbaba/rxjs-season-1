@@ -1,5 +1,4 @@
 import { from } from "rxjs";
-import { ajax } from "rxjs/ajax";
 import { concatMap } from "rxjs/operators";
 
 const urls = [
@@ -8,10 +7,25 @@ const urls = [
   "https://jsonplaceholder.typicode.com/comments/1",
 ];
 
+// example 1
+
 from(urls)
   .pipe(
     concatMap((url: string) => {
-      return ajax.getJSON(url);
+      return fetch(url).then((res) => res.json());
     })
   )
   .subscribe(console.log);
+
+// --------------------
+
+// example 2: async function
+
+// from(urls)
+//   .pipe(
+//     concatMap(async (url: string) => {
+//       const res = await fetch(url);
+//       return await res.json();
+//     })
+//   )
+//   .subscribe(console.log);
