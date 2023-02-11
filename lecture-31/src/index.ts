@@ -1,13 +1,10 @@
-import { from } from "rxjs";
+import { fromEvent, interval } from "rxjs";
 import { mergeMap } from "rxjs/operators";
-import { delayedOf } from "./custom-operators";
 
-from([1500, 700, 1000])
+fromEvent(document, "click")
   .pipe(
-    mergeMap((time: number, idx: number) => {
-      const value = `Place ${idx + 1}`;
-
-      return delayedOf(value, time);
+    mergeMap((pointerEvent: PointerEvent, idx: number) => {
+      return interval(1000);
     })
   )
   .subscribe(console.log);
