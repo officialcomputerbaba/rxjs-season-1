@@ -1,10 +1,14 @@
-import { from, of } from "rxjs";
+import { from } from "rxjs";
 import { concatMap } from "rxjs/operators";
+import { namedInterval } from "./custom-operators";
 
-from([1, 3, 5])
+from(["x", "y", "z"])
   .pipe(
-    concatMap((n: number, idx: number) => {
-      return of(n * 2);
+    concatMap((n: number) => {
+      console.log("Queue ", n);
+      return namedInterval(1500, `Interval ${n}`, 5);
     })
   )
-  .subscribe(console.log);
+  .subscribe((v) => {
+    console.log("Processed ", v);
+  });
